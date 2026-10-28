@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CODEX AI Cyber Shield</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CODEX AI Cyber Shield — AI-Powered Phishing Detection Platform" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+
+    <!-- MATRIX ENTRY SCREEN -->
+    <div id="matrixScreen" role="dialog" aria-label="Welcome screen">
+      <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+      <div class="centerBox">
+        <div class="center-logo" aria-hidden="true">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <h1 id="welcomeTyping" aria-live="polite"></h1>
+        <p class="center-tagline">AI-Powered Phishing Detection Platform</p>
+        <button id="enterBtn" aria-label="Enter the application">
+          <i class="fas fa-terminal"></i>
+          <span>ENTER</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN WEBSITE -->
+    <div id="mainContent">
+
+      <!-- NAVBAR -->
+      <nav role="navigation" aria-label="Main navigation">
+        <div class="logo">
+          <i class="fas fa-shield-halved" aria-hidden="true"></i>
+          <span>CODEX AI</span>
+        </div>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks" role="menubar">
+          <a href="#home" role="menuitem"><i class="fas fa-house" aria-hidden="true"></i> Home</a>
+          <a href="#scanner" role="menuitem"><i class="fas fa-magnifying-glass" aria-hidden="true"></i> Scanner</a>
+          <a href="#phishing" role="menuitem"><i class="fas fa-bug" aria-hidden="true"></i> Phishing Types</a>
+          <a href="#dashboard" role="menuitem"><i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard</a>
+          <a href="#teamSection" role="menuitem"><i class="fas fa-users" aria-hidden="true"></i> About Us</a>
+        </div>
+      </nav>
+
+      <!-- HOME -->
+      <section id="home" class="fade-section">
+        <div class="home-content">
+          <div class="home-badge"><i class="fas fa-shield-halved"></i> AI-Powered Security</div>
+          <h1>AI-Powered Phishing<br>Detection Platform</h1>
+          <p id="homeTyping" aria-live="polite"></p>
+          <div class="home-stats">
+            <div class="home-stat"><span class="stat-num">10+</span><span class="stat-lbl">Threat Types</span></div>
+            <div class="home-stat-sep"></div>
+            <div class="home-stat"><span class="stat-num">AI</span><span class="stat-lbl">Powered Engine</span></div>
+            <div class="home-stat-sep"></div>
+            <div class="home-stat"><span class="stat-num">Real-Time</span><span class="stat-lbl">Detection</span></div>
+          </div>
+          <div class="home-actions">
+            <a href="#scanner" class="btn-primary"><i class="fas fa-search"></i> Start Scanning</a>
+            <a href="#phishing" class="btn-ghost"><i class="fas fa-book-open"></i> Learn More</a>
+          </div>
+        </div>
+        <div class="home-visual" aria-hidden="true">
+          <div class="shield-ring"></div>
+          <div class="shield-ring ring2"></div>
+          <div class="shield-ring ring3"></div>
+          <i class="fas fa-shield-halved shield-icon"></i>
+        </div>
+      </section>
+
+      <!-- SCANNER -->
+      <section id="scanner" class="fade-section">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-magnifying-glass"></i> THREAT SCANNER</span>
+          <h2>Scan URL or Message</h2>
+          <p class="section-sub">Enter any URL or suspicious message to detect phishing threats in real-time.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="scanner-input-row">
+            <div class="input-wrap">
+              <i class="fas fa-link input-icon" aria-hidden="true"></i>
+              <input type="text" id="urlInput" placeholder="Paste URL or suspicious message here..." aria-label="URL or message input" autocomplete="off" spellcheck="false" />
+              <button class="input-clear" id="urlClear" aria-label="Clear input" style="display:none;"><i class="fas fa-times"></i></button>
+            </div>
+            <button class="btn-scan" onclick="scanThreat()" aria-label="Scan now">
+              <i class="fas fa-search"></i>
+              <span>Scan Now</span>
+            </button>
+          </div>
+          <p class="scanner-hint"><i class="fas fa-circle-info"></i> Press <kbd>Enter</kbd> to scan instantly</p>
+
+          <div class="progress-container" id="mainProgressContainer" style="display:none;">
+            <div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Scan progress">
+              <div id="progressBar" class="cyber-progress-fill"></div>
+              <div id="progressPercent" class="progress-percent">0%</div>
+            </div>
+            <p id="progressText" class="loading-text"></p>
+          </div>
+
+          <div id="result" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- EMAIL SCANNER -->
+      <section id="emailScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-envelope"></i> EMAIL PHISHING SCANNER</span>
+          <h2>Email Phishing Scanner</h2>
+          <p class="section-sub">Analyze suspicious emails for phishing indicators.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-at input-icon"></i><input type="email" id="emailFrom" placeholder="From (e.g., support@paypal.com)" /></div>
+            <div class="input-wrap"><i class="fas fa-heading input-icon"></i><input type="text" id="emailSubject" placeholder="Subject" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="emailBody" placeholder="Email body content..." rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanEmail()"><i class="fas fa-search"></i> Scan Email</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="emailProgressBar" class="cyber-progress-fill"></div><div id="emailProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="emailResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- SPEAR PHISHING SCANNER -->
+      <section id="spearScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-crosshairs"></i> SPEAR PHISHING SCANNER</span>
+          <h2>Spear Phishing Scanner</h2>
+          <p class="section-sub">Detect targeted phishing attacks aimed at specific individuals.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-at input-icon"></i><input type="email" id="spearFrom" placeholder="From (e.g., ceo@company.com)" /></div>
+            <div class="input-wrap"><i class="fas fa-envelope input-icon"></i><input type="email" id="spearTo" placeholder="To (your email address)" /></div>
+            <div class="input-wrap"><i class="fas fa-user input-icon"></i><input type="text" id="spearName" placeholder="Your Name (as used in emails)" /></div>
+            <div class="input-wrap"><i class="fas fa-heading input-icon"></i><input type="text" id="spearSubject" placeholder="Subject" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="spearBody" placeholder="Email body content..." rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanSpear()"><i class="fas fa-crosshairs"></i> Scan for Spear Phishing</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="spearProgressBar" class="cyber-progress-fill"></div><div id="spearProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="spearResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- WHALING SCANNER -->
+      <section id="whalingScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-fish"></i> WHALING SCANNER</span>
+          <h2>Whaling Scanner</h2>
+          <p class="section-sub">Detect attacks targeting high-profile executives (CEO, CFO).</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-at input-icon"></i><input type="email" id="whaleFrom" placeholder="From (e.g., ceo@company.com)" /></div>
+            <div class="input-wrap"><i class="fas fa-envelope input-icon"></i><input type="email" id="whaleTo" placeholder="To (target email)" /></div>
+            <div class="input-wrap"><i class="fas fa-user-tie input-icon"></i><input type="text" id="whaleTargetName" placeholder="Target's Name (e.g., John Doe)" /></div>
+            <div class="input-wrap"><i class="fas fa-briefcase input-icon"></i><input type="text" id="whaleTargetRole" placeholder="Target's Role (e.g., CEO, CFO)" /></div>
+            <div class="input-wrap full-span"><i class="fas fa-heading input-icon"></i><input type="text" id="whaleSubject" placeholder="Subject" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="whaleBody" placeholder="Email body content..." rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanWhaling()"><i class="fas fa-fish"></i> Scan for Whaling</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="whaleProgressBar" class="cyber-progress-fill"></div><div id="whaleProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="whaleResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- SMISHING SCANNER -->
+      <section id="smishingScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-mobile-screen-button"></i> SMISHING SCANNER</span>
+          <h2>Smishing Scanner</h2>
+          <p class="section-sub">Detect phishing attacks delivered through SMS text messages.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-phone input-icon"></i><input type="text" id="smsSender" placeholder="Sender (phone number or name)" /></div>
+            <div class="input-wrap"><i class="fas fa-mobile input-icon"></i><input type="tel" id="smsRecipient" placeholder="Your phone number" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-comment-sms input-icon input-icon-top"></i><textarea id="smsBody" placeholder="SMS message content..." rows="4"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanSmishing()"><i class="fas fa-mobile-screen-button"></i> Scan for Smishing</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="smsProgressBar" class="cyber-progress-fill"></div><div id="smsProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="smsResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- VISHING SCANNER -->
+      <section id="vishingScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-phone-volume"></i> VISHING SCANNER</span>
+          <h2>Vishing Scanner</h2>
+          <p class="section-sub">Identify voice call scams and phone-based social engineering.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-phone input-icon"></i><input type="text" id="vishCallerId" placeholder="Caller ID / Phone Number" /></div>
+            <div class="input-wrap"><i class="fas fa-id-badge input-icon"></i><input type="text" id="vishClaimedIdentity" placeholder="Caller Claims to Be (e.g., IRS, Bank)" /></div>
+            <div class="input-wrap full-span"><i class="fas fa-bullseye input-icon"></i><input type="text" id="vishCallPurpose" placeholder="Call Purpose (e.g., Account Suspended)" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="vishDetails" placeholder="Describe the call details..." rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanVishing()"><i class="fas fa-phone-volume"></i> Scan for Vishing</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="vishProgressBar" class="cyber-progress-fill"></div><div id="vishProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="vishResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- CLONE PHISHING SCANNER -->
+      <section id="cloneScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-clone"></i> CLONE PHISHING SCANNER</span>
+          <h2>Clone Phishing Scanner</h2>
+          <p class="section-sub">Detect emails that are cloned from legitimate messages with malicious modifications.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-at input-icon"></i><input type="email" id="cloneFrom" placeholder="From (e.g., colleague@company.com)" /></div>
+            <div class="input-wrap"><i class="fas fa-heading input-icon"></i><input type="text" id="cloneSubject" placeholder="Subject" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="cloneBody" placeholder="Email body content..." rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanClone()"><i class="fas fa-clone"></i> Scan for Clone Phishing</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="cloneProgressBar" class="cyber-progress-fill"></div><div id="cloneProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="cloneResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- QUISHING SCANNER -->
+      <section id="quishingScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-qrcode"></i> QUISHING SCANNER</span>
+          <h2>Quishing Scanner</h2>
+          <p class="section-sub">Detect QR code-based phishing attacks hiding malicious URLs.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-at input-icon"></i><input type="email" id="quishFrom" placeholder="From (e.g., support@company.com)" /></div>
+            <div class="input-wrap"><i class="fas fa-heading input-icon"></i><input type="text" id="quishSubject" placeholder="Subject" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="quishBody" placeholder="Email/message content... (mention any QR code references)" rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanQuishing()"><i class="fas fa-qrcode"></i> Scan for Quishing</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="quishProgressBar" class="cyber-progress-fill"></div><div id="quishProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="quishResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- ANGLER PHISHING SCANNER -->
+      <section id="anglerScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-fish-fins"></i> ANGLER PHISHING SCANNER</span>
+          <h2>Angler Phishing Scanner</h2>
+          <p class="section-sub">Detect fake social media accounts impersonating brands to steal credentials.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap select-wrap"><i class="fas fa-hashtag input-icon"></i>
+              <select id="anglerPlatform" aria-label="Social media platform">
+                <option value="">Select Social Media Platform</option>
+                <option value="twitter">Twitter / X</option>
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="tiktok">TikTok</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="input-wrap"><i class="fas fa-at input-icon"></i><input type="text" id="anglerHandle" placeholder="Attacker's Handle/Account (e.g., @support_tech)" /></div>
+            <div class="input-wrap full-span"><i class="fas fa-id-card input-icon"></i><input type="text" id="anglerClaim" placeholder="Claiming to Be (e.g., Amazon Support)" /></div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-comment input-icon input-icon-top"></i><textarea id="anglerMessage" placeholder="Message content..." rows="5"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanAngler()"><i class="fas fa-fish-fins"></i> Scan for Angler Phishing</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="anglerProgressBar" class="cyber-progress-fill"></div><div id="anglerProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="anglerResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- HTTPS PHISHING SCANNER -->
+      <section id="httpsScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-lock"></i> HTTPS PHISHING SCANNER</span>
+          <h2>HTTPS Phishing Scanner</h2>
+          <p class="section-sub">Detect fake HTTPS sites that masquerade as legitimate secure websites.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="input-wrap"><i class="fas fa-link input-icon"></i><input type="url" id="httpsUrl" placeholder="Enter suspicious URL (e.g., https://secure-paypal.com)" /></div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="httpsContext" placeholder="Optional: context (email subject/body)..." rows="3"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanHttps()"><i class="fas fa-lock-open"></i> Scan URL</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="httpsProgressBar" class="cyber-progress-fill"></div><div id="httpsProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="httpsResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- EVIL TWIN SCANNER -->
+      <section id="evilTwinScanner" class="scanner-section" style="display:none;">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-wifi"></i> EVIL TWIN SCANNER</span>
+          <h2>Evil Twin Scanner</h2>
+          <p class="section-sub">Identify rogue Wi-Fi access points mimicking legitimate networks.</p>
+        </div>
+        <div class="scanner-box">
+          <div class="form-grid">
+            <div class="input-wrap"><i class="fas fa-wifi input-icon"></i><input type="text" id="evilSsid" placeholder="Wi-Fi SSID (network name)" /></div>
+            <div class="input-wrap select-wrap"><i class="fas fa-lock input-icon"></i>
+              <select id="evilSecurity" aria-label="Security type">
+                <option value="">Select Security Type</option>
+                <option value="open">Open (No password)</option>
+                <option value="wep">WEP</option>
+                <option value="wpa">WPA</option>
+                <option value="wpa2">WPA2</option>
+                <option value="wpa3">WPA3</option>
+                <option value="unknown">Unknown / Other</option>
+              </select>
+            </div>
+            <div class="input-wrap select-wrap"><i class="fas fa-signal input-icon"></i>
+              <select id="evilSignal" aria-label="Signal strength">
+                <option value="">Signal Strength</option>
+                <option value="weak">Weak</option>
+                <option value="medium">Medium</option>
+                <option value="strong">Strong</option>
+              </select>
+            </div>
+            <div class="input-wrap select-wrap"><i class="fas fa-copy input-icon"></i>
+              <select id="evilDuplicate" aria-label="Duplicate SSID">
+                <option value="">Have you seen other networks with the same SSID?</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="unsure">Not sure</option>
+              </select>
+            </div>
+            <div class="input-wrap select-wrap full-span"><i class="fas fa-map-marker-alt input-icon"></i>
+              <select id="evilPublicPlace" aria-label="Public place">
+                <option value="">Are you in a public place? (café, airport, hotel...)</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left input-icon input-icon-top"></i><textarea id="evilDetails" placeholder="Any additional details (e.g., captive portal behavior, exact name duplicates)..." rows="3"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-scan" onclick="scanEvilTwin()"><i class="fas fa-wifi"></i> Scan for Evil Twin</button>
+            <button class="btn-back" onclick="showUrlScanner()"><i class="fas fa-arrow-left"></i> Back to URL Scanner</button>
+          </div>
+          <div class="progress-wrapper"><div class="progress"><div id="evilProgressBar" class="cyber-progress-fill"></div><div id="evilProgressPercent" class="progress-percent">0%</div></div><p class="loading-text"></p></div>
+          <div id="evilResult" class="scan-result" aria-live="polite" role="status"></div>
+        </div>
+      </section>
+
+      <!-- PHISHING TYPES -->
+      <section id="phishing" class="fade-section">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-bug"></i> THREAT LIBRARY</span>
+          <h2>Types of Phishing</h2>
+          <p class="section-sub">Click any card to open the dedicated scanner for that threat type.</p>
+        </div>
+        <div class="card-container">
+          <div class="card" data-type="Email Phishing">
+            <div class="card-icon"><i class="fas fa-envelope"></i></div>
+            <div class="card-title">Email Phishing</div>
+            <p class="card-desc">Deceptive emails mimicking trusted brands to steal credentials.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Spear Phishing">
+            <div class="card-icon"><i class="fas fa-crosshairs"></i></div>
+            <div class="card-title">Spear Phishing</div>
+            <p class="card-desc">Highly targeted attacks personalized for a specific individual.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Whaling">
+            <div class="card-icon"><i class="fas fa-fish"></i></div>
+            <div class="card-title">Whaling</div>
+            <p class="card-desc">Executive-level attacks targeting CEOs, CFOs, and directors.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Smishing">
+            <div class="card-icon"><i class="fas fa-mobile-screen-button"></i></div>
+            <div class="card-title">Smishing</div>
+            <p class="card-desc">Phishing attacks conducted via fraudulent SMS text messages.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Vishing">
+            <div class="card-icon"><i class="fas fa-phone-volume"></i></div>
+            <div class="card-title">Vishing</div>
+            <p class="card-desc">Voice call scams impersonating banks, IRS, or tech support.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Clone Phishing">
+            <div class="card-icon"><i class="fas fa-clone"></i></div>
+            <div class="card-title">Clone Phishing</div>
+            <p class="card-desc">Replicated legitimate emails with malicious links substituted.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Quishing">
+            <div class="card-icon"><i class="fas fa-qrcode"></i></div>
+            <div class="card-title">Quishing</div>
+            <p class="card-desc">QR codes leading to malicious sites, bypassing text filters.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Angler Phishing">
+            <div class="card-icon"><i class="fas fa-fish"></i></div>
+            <div class="card-title">Angler Phishing</div>
+            <p class="card-desc">Fake social media accounts posing as brand customer support.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="HTTPS Phishing">
+            <div class="card-icon"><i class="fas fa-lock"></i></div>
+            <div class="card-title">HTTPS Phishing</div>
+            <p class="card-desc">Sites with SSL certs that still lead to credential-stealing pages.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="card" data-type="Evil Twin">
+            <div class="card-icon"><i class="fas fa-wifi"></i></div>
+            <div class="card-title">Evil Twin</div>
+            <p class="card-desc">Rogue Wi-Fi hotspots mimicking legitimate networks to intercept traffic.</p>
+            <span class="card-cta">Scan <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="fade-section">
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-chart-line"></i> ANALYTICS</span>
+          <h2 class="dashboard-title">CYBER ANALYTICS PANEL</h2>
+          <p class="section-sub">Real-time insights from all scans performed in this session.</p>
+        </div>
+
+        <div class="dashboard-grid">
+          <!-- Stats Row -->
+          <div class="stats-container">
+            <div class="stat-card glow">
+              <div class="stat-icon-wrap"><i class="fas fa-database"></i></div>
+              <h3>Total Scanned</h3>
+              <p id="totalScans">0</p>
+              <span class="stat-sub">System Activity</span>
+            </div>
+            <div class="stat-card glow">
+              <div class="stat-icon-wrap danger"><i class="fas fa-triangle-exclamation"></i></div>
+              <h3>Threats Blocked</h3>
+              <p id="riskCountDisplay">0</p>
+              <span class="stat-sub">Detected Threats</span>
+            </div>
+            <div class="stat-card glow">
+              <div class="stat-icon-wrap safe"><i class="fas fa-circle-check"></i></div>
+              <h3>Safe Links</h3>
+              <p id="safeCountDisplay">0</p>
+              <span class="stat-sub">Secure Results</span>
+            </div>
+            <div class="stat-card glow">
+              <div class="stat-icon-wrap warn"><i class="fas fa-gauge-high"></i></div>
+              <h3>Risk Level</h3>
+              <div class="risk-pill"><span id="riskLevelPercent">0%</span></div>
+              <span class="stat-sub">Based on latest scans</span>
+            </div>
+          </div>
+
+          <!-- Risk Meter -->
+          <div class="analysis-panel panel" id="analysisPanel">
+            <div class="meter-backdrop"></div>
+            <div class="risk-meter" id="riskMeter" style="--risk: 0;">
+              <div class="meter-ring"></div>
+              <div class="meter-center">
+                <div class="meter-value" id="meterValue">0%</div>
+                <small>Risk Level</small>
+              </div>
+            </div>
+            <div class="status-block">
+              <div id="riskStatusBadge" class="status-badge status-safe">
+                <i class="fas fa-circle-check"></i> Safe
+              </div>
+              <p id="riskStatusDetail" class="status-detail">No active threats</p>
+              <div id="analyzingText" class="analyzing-text" style="display:none;">
+                <i class="fas fa-circle-notch fa-spin"></i> Analyzing...
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart -->
+          <div class="chart-panel panel">
+            <h3 class="panel-title"><i class="fas fa-chart-pie"></i> Threat Distribution</h3>
+            <div class="chart-container">
+              <canvas id="threatChart" aria-label="Threat distribution chart" role="img"></canvas>
+              <p id="noDataText" class="no-data-text"><i class="fas fa-circle-info"></i> No scans yet. Start scanning to see analytics.</p>
+            </div>
+          </div>
+
+          <!-- Logs -->
+          <div class="logs-panel panel">
+            <h3 class="panel-title"><i class="fas fa-list-check"></i> Scan Activity Logs</h3>
+            <div class="logs-wrap">
+              <table class="logs-table" aria-label="Scan history">
+                <thead>
+                  <tr>
+                    <th>Input</th>
+                    <th>Status</th>
+                    <th>Risk %</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="logsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM -->
+      <section id="teamSection" class="fade-section">
+        <div class="section-header center-header">
+          <span class="section-tag"><i class="fas fa-users"></i> THE TEAM</span>
+          <h1 id="typingTitle" class="team-heading" aria-live="polite"></h1>
+        </div>
+
+        <div class="team-wrapper">
+          <!-- LEFT PROFILE CARD -->
+          <div class="profile-card" role="region" aria-label="Team member profile">
+            <div class="profile-img">
+              <img id="memberImage" src="assets/krish.jpg" alt="Team member photo" />
+            </div>
+            <h2 id="memberName" class="text-animate blur-in">Krish</h2>
+            <h4 id="memberRole" class="text-animate blur-in">Lead Developer</h4>
+            <p id="memberDesc" class="text-animate blur-in">
+              The force that turns bold ideas into flawlessly executed reality.
+            </p>
+            <div class="social-icons">
+              <a id="instaLink" href="https://www.instagram.com/_k_r_i_s_h_x_?igsh=d254M25mZzFmazRv" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile"><i class="fab fa-instagram"></i></a>
+              <a id="linkedinLink" href="https://www.linkedin.com/in/krishanjit-chakraborty-258a5237a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><i class="fab fa-linkedin-in"></i></a>
+              <a id="githubLink" href="https://github.com/codexxxx07" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+
+          <!-- RIGHT NAME LIST -->
+          <div class="name-list" role="list" aria-label="Team members">
+            <div class="team-name active" role="listitem" tabindex="0"
+              data-img="assets/krish.jpg" data-name="Krish" data-role="Lead Developer"
+              data-desc="Built the complete website architecture and AI logic system"
+              data-insta="https://www.instagram.com/_k_r_i_s_h_x_?igsh=d254M25mZzFmazRv"
+              data-linkedin="https://www.linkedin.com/in/krishanjit-chakraborty-258a5237a"
+              data-github="https://github.com/codexxxx07">
+              <span>KRISH</span>
+            </div>
+            <div class="team-name" role="listitem" tabindex="0"
+              data-img="assets/Deb.jpg" data-name="Debrup" data-role="JS Engineer"
+              data-desc="Assisted in website development and JS functionalities"
+              data-insta="https://www.instagram.com/sick_loosing?igsh=NnRyaGJwenM0Nzkx"
+              data-linkedin="https://in.linkedin.com/in/debrup-bhattacherjee-41b728387"
+              data-github="https://github.com/debrupbhattacherjee">
+              <span>DEBRUP</span>
+            </div>
+            <div class="team-name" role="listitem" tabindex="0"
+              data-img="assets/Shreya.jpg" data-name="Shreya" data-role="UI/UX Designer"
+              data-desc="Designed the website interface and user experience"
+              data-insta="https://www.instagram.com/ame.thyst_25"
+              data-linkedin="https://www.linkedin.com/in/shreya-saha-375b52350"
+              data-github="#">
+              <span>SHREYA</span>
+            </div>
+            <div class="team-name" role="listitem" tabindex="0"
+              data-img="assets/Ghost.jpg" data-name="Prithviraj" data-role="Research Lead"
+              data-desc="Handled phishing research and documentation"
+              data-insta="https://www.instagram.com/callme_by_ghost?igsh=OXI4OWwwM3IxajNm"
+              data-linkedin="https://www.linkedin.com/in/prithviraj-guha-a564a5388"
+              data-github="https://github.com/prithvirajguha03-ai">
+              <span>PRITHIVIRAJ</span>
+            </div>
+            <div class="team-name" role="listitem" tabindex="0"
+              data-img="assets/Sunita.jpg" data-name="Sunita" data-role="PPT Maker"
+              data-desc="Created Cyber Security PPTs"
+              data-insta="#"
+              data-linkedin="https://www.linkedin.com/in/sunita-middya-b68723388"
+              data-github="#">
+              <span>SUNITA</span>
+            </div>
+            <div class="team-name" role="listitem" tabindex="0"
+              data-img="assets/Bushra.jpg" data-name="Bushra" data-role="PPT Maker"
+              data-desc="Created Cyber Security PPTs"
+              data-insta="https://www.instagram.com/itssjustbushh?igsh=MWU2ZDFybXBoeW1qZg=="
+              data-linkedin="https://www.linkedin.com/in/bushra-fatima-851879376"
+              data-github="https://github.com/Fatimabushra17">
+              <span>BUSHRA</span>
+            </div>
+            <div class="team-name" role="listitem" tabindex="0"
+              data-img="assets/Ankush.jpg" data-name="Ankush" data-role="Content Curator"
+              data-desc="Manages website and PPT content, documentation, and updates"
+              data-insta="https://www.instagram.com/ankush_sf?igsh=MW9maHZhNGxsMWpmNg=="
+              data-linkedin="https://www.linkedin.com/in/ankush-chatterjee-7a509b325"
+              data-github="https://github.com/QUITX7STORX">
+              <span>ANKUSH</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <i class="fas fa-shield-halved"></i>
+            <span>CODEX AI Cyber Shield</span>
+          </div>
+          <p>© 2026 CODEX AI Cyber Shield &nbsp;|&nbsp; Built by Team CODEX &nbsp;|&nbsp; All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div><!-- /#mainContent -->
+
+    <script src="script.js"></script>
+  </body>
+</html>
